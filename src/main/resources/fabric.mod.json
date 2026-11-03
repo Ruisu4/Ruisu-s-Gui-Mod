@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "ruisusgui",
+	"version": "${version}",
+	"name": "Ruisu's Gui Mod",
+	"description": "Shows whether toggle sprint is on, in a HUD element you can drag anywhere.",
+	"authors": [
+		"Ruisu4"
+	],
+	"license": "MIT",
+	"icon": "assets/ruisusgui/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"com.ruisu.guimod.RuisusGuiClient"
+		],
+		"modmenu": [
+			"com.ruisu.guimod.ModMenuIntegration"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"modmenu": "*"
+	}
+}
