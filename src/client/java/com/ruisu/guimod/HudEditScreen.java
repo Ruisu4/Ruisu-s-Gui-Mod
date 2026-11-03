@@ -61,6 +61,8 @@ public class HudEditScreen extends Screen {
 	private Button shadowButton;
 	private Button colorButton;
 	private Button backgroundButton;
+	private Button hotbarKeysButton;
+	private Button hotbarKeysLayerButton;
 
 	/**
 	 * @param parent screen to go back to when closed, or null to return to the game
@@ -110,6 +112,15 @@ public class HudEditScreen extends Screen {
 				.bounds(left, top + 72, 100, 20).build());
 		addRenderableWidget(Button.builder(Component.translatable("gui.done"), button -> onClose())
 				.bounds(right, top + 72, 100, 20).build());
+
+		// Not tied to the selected box: labels the vanilla hotbar with its keys.
+		hotbarKeysButton = addRenderableWidget(Button.builder(CommonComponents.EMPTY, button ->
+				HudLayout.setShowHotbarKeys(!HudLayout.showHotbarKeys())
+		).bounds(left, top + 96, 100, 20).build());
+
+		hotbarKeysLayerButton = addRenderableWidget(Button.builder(CommonComponents.EMPTY, button ->
+				HudLayout.setHotbarKeysBehindItems(!HudLayout.hotbarKeysBehindItems())
+		).bounds(right, top + 96, 100, 20).build());
 	}
 
 	@Override
@@ -156,6 +167,12 @@ public class HudEditScreen extends Screen {
 	}
 
 	private void updateButtonLabels() {
+		hotbarKeysButton.setMessage(Component.translatable("screen.ruisusgui.hotbar_keys", onOff(HudLayout.showHotbarKeys())));
+		hotbarKeysLayerButton.active = HudLayout.showHotbarKeys();
+		hotbarKeysLayerButton.setMessage(Component.translatable(HudLayout.hotbarKeysBehindItems()
+				? "screen.ruisusgui.hotbar_keys.behind"
+				: "screen.ruisusgui.hotbar_keys.front"));
+
 		boolean hasSelection = selected != null;
 		shownButton.active = hasSelection;
 		shadowButton.active = hasSelection;

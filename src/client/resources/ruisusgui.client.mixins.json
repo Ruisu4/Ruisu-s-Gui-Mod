@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.ruisu.guimod.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+		"HudHotbarMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

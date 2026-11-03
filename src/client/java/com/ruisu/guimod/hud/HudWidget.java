@@ -66,14 +66,24 @@ public abstract class HudWidget {
 		return defaultY;
 	}
 
+	/** Space between the box edge and the content, before scaling. */
+	protected int padding() {
+		return PADDING;
+	}
+
+	/** Background opacity (0 to 100) a new player starts with. They can change it in the editor. */
+	public int defaultBackgroundOpacity() {
+		return HudLayout.DEFAULT_BACKGROUND_OPACITY;
+	}
+
 	/** On-screen width, including the size setting. */
 	public final int width(Font font, boolean editing) {
-		return Mth.ceil((contentWidth(font, editing) + PADDING * 2) * HudLayout.scale(this));
+		return Mth.ceil((contentWidth(font, editing) + padding() * 2) * HudLayout.scale(this));
 	}
 
 	/** On-screen height, including the size setting. */
 	public final int height(Font font, boolean editing) {
-		return Mth.ceil((contentHeight(font, editing) + PADDING * 2) * HudLayout.scale(this));
+		return Mth.ceil((contentHeight(font, editing) + padding() * 2) * HudLayout.scale(this));
 	}
 
 	public final void draw(GuiGraphicsExtractor graphics, Font font, int x, int y, boolean editing) {
@@ -84,9 +94,9 @@ public abstract class HudWidget {
 		graphics.pose().translate(x, y);
 		graphics.pose().scale(scale, scale);
 		if (style.hasBackground()) {
-			graphics.fill(0, 0, contentWidth(font, editing) + PADDING * 2, contentHeight(font, editing) + PADDING * 2, style.backgroundColor());
+			graphics.fill(0, 0, contentWidth(font, editing) + padding() * 2, contentHeight(font, editing) + padding() * 2, style.backgroundColor());
 		}
-		graphics.pose().translate(PADDING, PADDING);
+		graphics.pose().translate(padding(), padding());
 		drawContent(graphics, font, editing, style);
 		graphics.pose().popMatrix();
 	}

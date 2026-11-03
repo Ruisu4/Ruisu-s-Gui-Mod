@@ -10,6 +10,9 @@
 	"screen.ruisusgui.text_color": "Text: %s",
 	"screen.ruisusgui.background": "Background: %s",
 	"screen.ruisusgui.reset": "Reset Selected",
+	"screen.ruisusgui.hotbar_keys": "Key Labels: %s",
+	"screen.ruisusgui.hotbar_keys.front": "Labels: In Front",
+	"screen.ruisusgui.hotbar_keys.behind": "Labels: Behind",
 
 	"screen.ruisusgui.color.white": "White",
 	"screen.ruisusgui.color.gray": "Gray",
@@ -28,5 +31,7 @@
 	"hud.ruisusgui.toggle_sprint": "Toggle Sprint",
 	"hud.ruisusgui.toggle_sprint.text": "Toggle Sprint: %s",
 
-	"hud.ruisusgui.potion_effects": "Potion Effects"
+	"hud.ruisusgui.potion_effects": "Potion Effects",
+
+	"hud.ruisusgui.armor": "Armor"
 }

@@ -1,8 +1,10 @@
 package com.ruisu.guimod;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.ruisu.guimod.hud.HotbarKeys;
 import com.ruisu.guimod.hud.HudLayout;
 import com.ruisu.guimod.hud.HudWidgets;
+import com.ruisu.guimod.widget.ArmorWidget;
 import com.ruisu.guimod.widget.PotionEffectsWidget;
 import com.ruisu.guimod.widget.ToggleSprintWidget;
 import net.fabricmc.api.ClientModInitializer;
@@ -25,6 +27,7 @@ public class RuisusGuiClient implements ClientModInitializer {
 		PotionEffectsWidget potionEffects = new PotionEffectsWidget();
 		HudWidgets.register(new ToggleSprintWidget());
 		HudWidgets.register(potionEffects);
+		HudWidgets.register(new ArmorWidget());
 
 		HudLayout.load();
 
@@ -42,6 +45,7 @@ public class RuisusGuiClient implements ClientModInitializer {
 		});
 
 		HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "widgets"), HudWidgets::extract);
+		HudElementRegistry.attachElementAfter(VanillaHudElements.HOTBAR, Identifier.fromNamespaceAndPath(MOD_ID, "hotbar_keys"), HotbarKeys::extract);
 
 		// Hide vanilla's effect icons in the top-right corner while our potion widget is shown, so effects don't appear twice.
 		HudElementRegistry.replaceElement(VanillaHudElements.MOB_EFFECTS, vanilla -> (graphics, deltaTracker) -> {

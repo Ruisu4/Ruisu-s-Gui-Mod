@@ -40,7 +40,27 @@ public final class HudLayout {
 	}
 
 	private static final class Data {
+		boolean hotbarKeys = true;
+		boolean hotbarKeysBehindItems = false;
 		Map<String, Entry> widgets = new LinkedHashMap<>();
+	}
+
+	/** Whether hotbar key labels are drawn behind the items instead of in front of them. */
+	public static boolean hotbarKeysBehindItems() {
+		return data.hotbarKeysBehindItems;
+	}
+
+	public static void setHotbarKeysBehindItems(boolean behind) {
+		data.hotbarKeysBehindItems = behind;
+	}
+
+	/** Whether to label hotbar slots with their keys. See {@link HotbarKeys}. */
+	public static boolean showHotbarKeys() {
+		return data.hotbarKeys;
+	}
+
+	public static void setShowHotbarKeys(boolean show) {
+		data.hotbarKeys = show;
 	}
 
 	private static final class Entry {
@@ -60,6 +80,7 @@ public final class HudLayout {
 		Entry(HudWidget widget) {
 			x = widget.defaultX();
 			y = widget.defaultY();
+			backgroundOpacity = widget.defaultBackgroundOpacity();
 		}
 	}
 

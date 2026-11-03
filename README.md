@@ -7,6 +7,13 @@ Client-side Fabric mod for Minecraft 26.2 that adds movable, resizable HUD boxes
 - **Toggle Sprint**: shows ON/OFF. Set **Options → Controls → Sprint** to **Toggle** so it shows your toggle state.
 - **Potion Effects**: each active effect's icon and time left, which turns red in the last 10 seconds. Only shows
   when you have effects. While it's on, vanilla's effect icons in the top-right corner are hidden.
+- **Armor**: your helmet, chestplate, leggings and boots in a row of hotbar-style slots with durability bars.
+  Empty slots show a faint outline, and a blinking red "!" appears above a piece with 10% durability or less.
+  Styled after uku's Armor HUD. Only shows when you're wearing armour.
+
+**Hotbar key labels**: writes the key bound to each hotbar slot in the slot's top-left corner. It follows the
+vanilla hotbar, so it can't be moved. In the editor, **Key Labels** turns it on or off, and **Labels: In Front /
+Behind** picks whether the labels are drawn over the items or underneath them.
 
 ## Editing the layout
 
