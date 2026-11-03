@@ -4,6 +4,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.util.Mth;
 
 /**
  * Draws the "Toggle Sprint: ON/OFF" box. Shared by the in-game HUD and the edit screen.
@@ -40,18 +41,34 @@ public final class SprintHud {
 		return Minecraft.getInstance().options.keySprint.isDown();
 	}
 
+	/** On-screen width, including the size setting. */
 	public static int width(Font font) {
+		return Mth.ceil(baseWidth(font) * SprintHudConfig.scale());
+	}
+
+	/** On-screen height, including the size setting. */
+	public static int height(Font font) {
+		return Mth.ceil(baseHeight(font) * SprintHudConfig.scale());
+	}
+
+	private static int baseWidth(Font font) {
 		return font.width(LABEL + "OFF") + PADDING * 2;
 	}
 
-	public static int height(Font font) {
+	private static int baseHeight(Font font) {
 		return font.lineHeight - 1 + PADDING * 2;
 	}
 
 	public static void draw(GuiGraphicsExtractor graphics, Font font, int x, int y) {
 		boolean on = isSprintToggled();
-		graphics.fill(x, y, x + width(font), y + height(font), BACKGROUND);
-		graphics.text(font, LABEL, x + PADDING, y + PADDING, COLOR_LABEL, true);
-		graphics.text(font, on ? "ON" : "OFF", x + PADDING + font.width(LABEL), y + PADDING, on ? COLOR_ON : COLOR_OFF, true);
+		float scale = SprintHudConfig.scale();
+
+		graphics.pose().pushMatrix();
+		graphics.pose().translate(x, y);
+		graphics.pose().scale(scale, scale);
+		graphics.fill(0, 0, baseWidth(font), baseHeight(font), BACKGROUND);
+		graphics.text(font, LABEL, PADDING, PADDING, COLOR_LABEL, true);
+		graphics.text(font, on ? "ON" : "OFF", PADDING + font.width(LABEL), PADDING, on ? COLOR_ON : COLOR_OFF, true);
+		graphics.pose().popMatrix();
 	}
 }

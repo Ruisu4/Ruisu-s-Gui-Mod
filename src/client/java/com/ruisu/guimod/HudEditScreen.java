@@ -8,12 +8,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
 /**
- * Drag the sprint indicator around with the left mouse button. Closing the screen saves the position.
+ * Drag the sprint indicator around with the left mouse button and scroll over it to resize.
+ * Closing the screen saves the position and size.
  */
 public class HudEditScreen extends Screen {
 	private static final int OUTLINE = 0xFFFFFFFF;
 	private static final int OUTLINE_HOVER = 0xFFFFFF55;
 	private static final int SNAP_DISTANCE = 4;
+	private static final float SCALE_STEP = 0.1f;
 
 	private static boolean open;
 
@@ -42,14 +44,27 @@ public class HudEditScreen extends Screen {
 		hudX = SprintHudConfig.pixelX(width, SprintHud.width(font));
 		hudY = SprintHudConfig.pixelY(height, SprintHud.height(font));
 
+		addRenderableWidget(Button.builder(Component.literal("-"), button -> changeScale(-SCALE_STEP))
+				.bounds(width / 2 - 102, height / 2 + 10, 20, 20).build());
+
+		addRenderableWidget(Button.builder(Component.literal("+"), button -> changeScale(SCALE_STEP))
+				.bounds(width / 2 + 82, height / 2 + 10, 20, 20).build());
+
 		addRenderableWidget(Button.builder(Component.translatable("screen.ruisusgui.reset"), button -> {
 			SprintHudConfig.reset();
 			hudX = SprintHudConfig.pixelX(width, SprintHud.width(font));
 			hudY = SprintHudConfig.pixelY(height, SprintHud.height(font));
-		}).bounds(width / 2 - 102, height / 2 + 10, 100, 20).build());
+		}).bounds(width / 2 - 102, height / 2 + 34, 100, 20).build());
 
 		addRenderableWidget(Button.builder(Component.translatable("gui.done"), button -> onClose())
-				.bounds(width / 2 + 2, height / 2 + 10, 100, 20).build());
+				.bounds(width / 2 + 2, height / 2 + 34, 100, 20).build());
+	}
+
+	/** Resizes the box from its top-left corner, then pulls it back on screen if it grew past an edge. */
+	private void changeScale(float delta) {
+		SprintHudConfig.setScale(SprintHudConfig.scale() + delta);
+		hudX = Mth.clamp(hudX, 0, Math.max(width - SprintHud.width(font), 0));
+		hudY = Mth.clamp(hudY, 0, Math.max(height - SprintHud.height(font), 0));
 	}
 
 	@Override
@@ -57,6 +72,8 @@ public class HudEditScreen extends Screen {
 		super.extractRenderState(graphics, mouseX, mouseY, partialTick);
 
 		graphics.centeredText(font, Component.translatable("screen.ruisusgui.edit_hud.hint"), width / 2, height / 2 - 10, 0xFFFFFFFF);
+		int percent = Math.round(SprintHudConfig.scale() * 100);
+		graphics.centeredText(font, Component.translatable("screen.ruisusgui.size", percent), width / 2, height / 2 + 16, 0xFFFFFFFF);
 
 		SprintHud.draw(graphics, font, hudX, hudY);
 		boolean highlighted = dragging || isOverHud(mouseX, mouseY);
@@ -93,6 +110,15 @@ public class HudEditScreen extends Screen {
 			return true;
 		}
 		return super.mouseReleased(event);
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+		if (scrollY != 0 && isOverHud(mouseX, mouseY)) {
+			changeScale(scrollY > 0 ? SCALE_STEP : -SCALE_STEP);
+			return true;
+		}
+		return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 	}
 
 	@Override

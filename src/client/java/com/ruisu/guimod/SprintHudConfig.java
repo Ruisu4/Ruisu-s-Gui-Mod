@@ -15,7 +15,7 @@ import java.nio.file.Path;
 
 /**
  * Stores the HUD position as a fraction of the free screen space (0 = left/top edge, 1 = right/bottom edge),
- * so it stays in the same spot when the window or GUI scale changes.
+ * so it stays in the same spot when the window or GUI scale changes. Also stores the box's size multiplier.
  */
 public final class SprintHudConfig {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RuisusGuiClient.MOD_ID);
@@ -24,6 +24,9 @@ public final class SprintHudConfig {
 
 	public static final double DEFAULT_X = 0.0;
 	public static final double DEFAULT_Y = 0.0;
+	public static final float DEFAULT_SCALE = 1.0f;
+	public static final float MIN_SCALE = 0.5f;
+	public static final float MAX_SCALE = 4.0f;
 
 	private static Data data = new Data();
 
@@ -33,6 +36,16 @@ public final class SprintHudConfig {
 	private static final class Data {
 		double x = DEFAULT_X;
 		double y = DEFAULT_Y;
+		float scale = DEFAULT_SCALE;
+	}
+
+	public static float scale() {
+		return Mth.clamp(data.scale, MIN_SCALE, MAX_SCALE);
+	}
+
+	public static void setScale(float scale) {
+		// Round to the nearest 10% so repeated steps don't drift.
+		data.scale = Mth.clamp(Math.round(scale * 10) / 10f, MIN_SCALE, MAX_SCALE);
 	}
 
 	public static void load() {
