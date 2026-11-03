@@ -1,7 +1,16 @@
 {
-	"key.ruisusgui.edit_hud": "Move Sprint Indicator",
-	"screen.ruisusgui.edit_hud": "Move Sprint Indicator",
-	"screen.ruisusgui.edit_hud.hint": "Drag the sprint box to move it, scroll over it to resize",
-	"screen.ruisusgui.size": "Size: %s%%",
-	"screen.ruisusgui.reset": "Reset Position"
+	"key.ruisusgui.edit_hud": "Edit HUD Layout",
+	"screen.ruisusgui.edit_hud": "Edit HUD Layout",
+	"screen.ruisusgui.edit_hud.hint": "Drag a box to move it, scroll over it to resize",
+	"screen.ruisusgui.edit_hud.hint2": "Right-click a box to hide or show it",
+	"screen.ruisusgui.size": "%s: %s%%",
+	"screen.ruisusgui.reset": "Reset Selected",
+
+	"hud.ruisusgui.on": "ON",
+	"hud.ruisusgui.off": "OFF",
+
+	"hud.ruisusgui.toggle_sprint": "Toggle Sprint",
+	"hud.ruisusgui.toggle_sprint.text": "Toggle Sprint: %s",
+
+	"hud.ruisusgui.potion_effects": "Potion Effects"
 }

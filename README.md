@@ -1,10 +1,30 @@
 # Ruisu's Gui Mod
 
-Client-side Fabric mod for Minecraft 26.2 that shows a **Toggle Sprint: ON/OFF** box on your HUD.
+Client-side Fabric mod for Minecraft 26.2 that adds movable, resizable HUD boxes.
 
-- Set **Options → Controls → Sprint** to **Toggle** so the box shows your toggle state.
-- Press **Right Shift** (rebindable under Controls → Key Binds → Miscellaneous) to open the editor, drag the box anywhere, and scroll over it (or use **−** / **+**) to change its size from 50% to 400%. Press **Done** or Esc when finished. The position and size are saved to `config/ruisusgui.json`.
-- With [Mod Menu](https://modrinth.com/mod/modmenu) installed, the mod's config button opens the same editor.
+## Widgets
+
+- **Toggle Sprint**: shows ON/OFF. Set **Options → Controls → Sprint** to **Toggle** so it shows your toggle state.
+- **Potion Effects**: each active effect's icon and time left, which turns red in the last 10 seconds. Only shows
+  when you have effects. While it's on, vanilla's effect icons in the top-right corner are hidden.
+
+## Editing the layout
+
+Press **Right Shift** (rebindable under Controls → Key Binds → Miscellaneous), or use the config button in
+[Mod Menu](https://modrinth.com/mod/modmenu).
+
+- **Drag** a box to move it. It snaps to the screen edges.
+- **Scroll** over a box, or use **−** / **+**, to resize it from 50% to 400%.
+- **Right-click** a box to hide or show it.
+- **Reset Selected** puts the last box you clicked back to its default.
+
+Press **Done** or Esc when finished. Everything is saved to `config/ruisusgui.json`.
+
+## Adding a widget
+
+For one line of text, extend `TextHudWidget` and return the text from `text()`. For anything else
+(icons, several rows), extend `HudWidget` and draw it yourself. Register it in `RuisusGuiClient`.
+Add its name to `assets/ruisusgui/lang/en_us.json` as `hud.ruisusgui.<id>`.
 
 ## Building
 
