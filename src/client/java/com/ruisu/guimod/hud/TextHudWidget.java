@@ -9,8 +9,6 @@ import net.minecraft.network.chat.Component;
  * A widget that shows one line of text.
  */
 public abstract class TextHudWidget extends HudWidget {
-	private static final int TEXT_COLOR = 0xFFFFFFFF;
-
 	protected TextHudWidget(String id, double defaultX, double defaultY) {
 		super(id, defaultX, defaultY);
 	}
@@ -42,8 +40,8 @@ public abstract class TextHudWidget extends HudWidget {
 	}
 
 	@Override
-	protected final void drawContent(GuiGraphicsExtractor graphics, Font font, boolean editing) {
-		graphics.text(font, content(editing), 0, 0, TEXT_COLOR, true);
+	protected final void drawContent(GuiGraphicsExtractor graphics, Font font, boolean editing, WidgetStyle style) {
+		graphics.text(font, content(editing), 0, 0, style.textColor(), style.textShadow());
 	}
 
 	private Component content(boolean editing) {

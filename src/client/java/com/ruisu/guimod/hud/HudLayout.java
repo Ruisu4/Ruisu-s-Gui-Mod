@@ -31,6 +31,8 @@ public final class HudLayout {
 	public static final float DEFAULT_SCALE = 1.0f;
 	public static final float MIN_SCALE = 0.5f;
 	public static final float MAX_SCALE = 4.0f;
+	public static final int DEFAULT_TEXT_COLOR = 0xFFFFFF;
+	public static final int DEFAULT_BACKGROUND_OPACITY = 50;
 
 	private static Data data = new Data();
 
@@ -46,6 +48,11 @@ public final class HudLayout {
 		double y;
 		float scale = DEFAULT_SCALE;
 		boolean enabled = true;
+		/** RGB, no alpha. */
+		int textColor = DEFAULT_TEXT_COLOR;
+		boolean textShadow = true;
+		/** 0 (no background) to 100 (solid black). */
+		int backgroundOpacity = DEFAULT_BACKGROUND_OPACITY;
 
 		Entry() {
 		}
@@ -113,8 +120,46 @@ public final class HudLayout {
 		entry(widget).enabled = enabled;
 	}
 
+	/** The text colour, shadow and background a widget should be drawn with. */
+	public static WidgetStyle style(HudWidget widget) {
+		Entry entry = entry(widget);
+		int opacity = Mth.clamp(entry.backgroundOpacity, 0, 100);
+		int backgroundAlpha = Math.round(opacity * 255 / 100f);
+		return new WidgetStyle(0xFF000000 | entry.textColor, entry.textShadow, backgroundAlpha << 24);
+	}
+
+	/** RGB, no alpha. */
+	public static int textColor(HudWidget widget) {
+		return entry(widget).textColor & 0xFFFFFF;
+	}
+
+	public static void setTextColor(HudWidget widget, int rgb) {
+		entry(widget).textColor = rgb & 0xFFFFFF;
+	}
+
+	public static boolean textShadow(HudWidget widget) {
+		return entry(widget).textShadow;
+	}
+
+	public static void setTextShadow(HudWidget widget, boolean shadow) {
+		entry(widget).textShadow = shadow;
+	}
+
+	/** 0 (no background) to 100 (solid black). */
+	public static int backgroundOpacity(HudWidget widget) {
+		return Mth.clamp(entry(widget).backgroundOpacity, 0, 100);
+	}
+
+	public static void setBackgroundOpacity(HudWidget widget, int opacity) {
+		entry(widget).backgroundOpacity = Mth.clamp(opacity, 0, 100);
+	}
+
+	/** Puts position, size and style back to the defaults. Keeps whether the widget is shown. */
 	public static void reset(HudWidget widget) {
-		data.widgets.put(widget.id(), new Entry(widget));
+		boolean enabled = isEnabled(widget);
+		Entry entry = new Entry(widget);
+		entry.enabled = enabled;
+		data.widgets.put(widget.id(), entry);
 	}
 
 	private static int toPixels(double fraction, int freeSpace) {

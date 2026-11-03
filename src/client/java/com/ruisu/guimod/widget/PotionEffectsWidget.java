@@ -1,6 +1,7 @@
 package com.ruisu.guimod.widget;
 
 import com.ruisu.guimod.hud.HudWidget;
+import com.ruisu.guimod.hud.WidgetStyle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -21,7 +22,6 @@ public class PotionEffectsWidget extends HudWidget {
 	private static final int ICON_SIZE = 18;
 	private static final int ICON_GAP = 3;
 	private static final int ROW_GAP = 1;
-	private static final int TEXT_COLOR = 0xFFFFFFFF;
 	private static final int ENDING_COLOR = 0xFFFF5555;
 	/** Timers turn red in the last 10 seconds. */
 	private static final int ENDING_TICKS = 200;
@@ -58,14 +58,14 @@ public class PotionEffectsWidget extends HudWidget {
 	}
 
 	@Override
-	protected void drawContent(GuiGraphicsExtractor graphics, Font font, boolean editing) {
+	protected void drawContent(GuiGraphicsExtractor graphics, Font font, boolean editing, WidgetStyle style) {
 		int y = 0;
 		for (MobEffectInstance effect : effects(editing)) {
 			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, Hud.getMobEffectSprite(effect.getEffect()), 0, y, ICON_SIZE, ICON_SIZE);
 
 			boolean ending = !effect.isInfiniteDuration() && effect.endsWithin(ENDING_TICKS);
 			int textY = y + (ICON_SIZE - font.lineHeight) / 2 + 1;
-			graphics.text(font, timer(effect), ICON_SIZE + ICON_GAP, textY, ending ? ENDING_COLOR : TEXT_COLOR, true);
+			graphics.text(font, timer(effect), ICON_SIZE + ICON_GAP, textY, ending ? ENDING_COLOR : style.textColor(), style.textShadow());
 
 			y += ICON_SIZE + ROW_GAP;
 		}

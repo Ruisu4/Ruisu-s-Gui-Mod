@@ -18,8 +18,6 @@ import net.minecraft.util.Mth;
 public abstract class HudWidget {
 	public static final int PADDING = 3;
 
-	private static final int BACKGROUND = 0x80000000;
-
 	private final String id;
 	private final double defaultX;
 	private final double defaultY;
@@ -41,8 +39,11 @@ public abstract class HudWidget {
 	/** Height of the content before scaling, not counting padding. */
 	protected abstract int contentHeight(Font font, boolean editing);
 
-	/** Draws the content with its top-left corner at (0, 0), before scaling. */
-	protected abstract void drawContent(GuiGraphicsExtractor graphics, Font font, boolean editing);
+	/**
+	 * Draws the content with its top-left corner at (0, 0), before scaling.
+	 * Use the style's text colour and shadow for text so the player's settings apply.
+	 */
+	protected abstract void drawContent(GuiGraphicsExtractor graphics, Font font, boolean editing, WidgetStyle style);
 
 	/** Whether to draw the box in game. Return false when there's nothing to show. */
 	public boolean hasContent() {
@@ -77,13 +78,16 @@ public abstract class HudWidget {
 
 	public final void draw(GuiGraphicsExtractor graphics, Font font, int x, int y, boolean editing) {
 		float scale = HudLayout.scale(this);
+		WidgetStyle style = HudLayout.style(this);
 
 		graphics.pose().pushMatrix();
 		graphics.pose().translate(x, y);
 		graphics.pose().scale(scale, scale);
-		graphics.fill(0, 0, contentWidth(font, editing) + PADDING * 2, contentHeight(font, editing) + PADDING * 2, BACKGROUND);
+		if (style.hasBackground()) {
+			graphics.fill(0, 0, contentWidth(font, editing) + PADDING * 2, contentHeight(font, editing) + PADDING * 2, style.backgroundColor());
+		}
 		graphics.pose().translate(PADDING, PADDING);
-		drawContent(graphics, font, editing);
+		drawContent(graphics, font, editing, style);
 		graphics.pose().popMatrix();
 	}
 }
